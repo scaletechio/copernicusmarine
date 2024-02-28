@@ -16,10 +16,10 @@ jobs:
     steps:
     - name: Determine tag or branch
       id: tag_or_branch
-      run: echo "::set-output name=tag_or_branch::${GITHUB_REF#refs/*/}"
+      run: echo "::set-output name=tag_or_branch::$(echo ${GITHUB_REF#refs/*/})"
     - name: Determine tag or branch name
       id: tag_or_branch_name
-      run: echo "::set-output name=tag_or_branch_name::$(if [[ ${GITHUB_REF} == 'refs/tags/'* ]]; then echo ${GITHUB_REF#refs/tags/}; else echo ${GITHUB_REF#refs/heads/}; fi)"
+      run: echo "::set-output name=tag_or_branch_name::$(if [[ '${{ steps.tag_or_branch.outputs.tag_or_branch }}' == 'tags' ]]; then echo ${GITHUB_REF#refs/tags/}; else echo ${GITHUB_REF#refs/heads/}; fi)"
     - name: Login to Dockerhub registry
       uses: docker/login-action@v3
       with:
@@ -30,4 +30,4 @@ jobs:
       with:
           push: true
           tags: |
-            scaletechio/copernicusmarine:${{ steps.tag_or_branch.outputs.tag_or_branch_name }}
+            scaletechio/copernicusmarine:${{ steps.tag_or_branch_name.outputs.tag_or_branch_name }}
