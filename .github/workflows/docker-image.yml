@@ -29,6 +29,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: >
-            scaletechio/copernicusmarine:
-              ${{ steps.tag_or_branch.outputs.tag_or_branch_name }}
+          tags: "scaletechio/copernicusmarine:${{ steps.tag_or_branch_name.outputs.tag_or_branch_name }}"
