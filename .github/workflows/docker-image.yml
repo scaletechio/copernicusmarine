@@ -3,6 +3,8 @@ name: Docker Image CI
 on:
   push:
     branches: [ "master", "main", "development", "test" ]
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -21,4 +23,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
           push: true
-          tags: 'scaletechio/copernicusmarine:${{ steps.extract_branch.outputs.branch }}'
+          tags: |
+            scaletechio/copernicusmarine:${{ steps.extract_branch.outputs.branch }}
+            scaletechio/copernicusmarine:${{ github.ref }}
